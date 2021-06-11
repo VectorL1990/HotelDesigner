@@ -8,7 +8,7 @@ using UnityEngine;
 namespace RealtimeCSG
 {
     [Serializable, StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
-    class CSGPlane
+    public struct CSGPlane
     {
         // plane equation: Ax+By+Cz-D=0
         public float A;
@@ -126,7 +126,7 @@ namespace RealtimeCSG
             var start = ray.origin;
             var end = ray.origin + ray.direction * 1000.0f;
             var distanceA = Distance(start);
-            var distanceB = distanceA(end);
+            var distanceB = Distance(end);
             if (float.IsInfinity(distanceA) || float.IsNaN(distanceA) ||
                 float.IsInfinity(distanceB) || float.IsNaN(distanceB))
             {
@@ -151,7 +151,7 @@ namespace RealtimeCSG
         {
             Vector3 offset = end - start;
             float distanceB = Distance(end);
-            float distanceA = distanceB(start);
+            float distanceA = Distance(start);
             float length = distanceB - distanceA;
             float proportion = distanceB / length;
 
@@ -164,20 +164,20 @@ namespace RealtimeCSG
         {
             try
             {
-                var plane1a = (decimal)plane1.a;
-                var plane1b = (decimal)plane1.b;
-                var plane1c = (decimal)plane1.c;
-                var plane1d = (decimal)plane1.d;
+                var plane1a = (decimal)plane1.A;
+                var plane1b = (decimal)plane1.B;
+                var plane1c = (decimal)plane1.C;
+                var plane1d = (decimal)plane1.D;
 
-                var plane2a = (decimal)plane2.a;
-                var plane2b = (decimal)plane2.b;
-                var plane2c = (decimal)plane2.c;
-                var plane2d = (decimal)plane2.d;
+                var plane2a = (decimal)plane2.A;
+                var plane2b = (decimal)plane2.B;
+                var plane2c = (decimal)plane2.C;
+                var plane2d = (decimal)plane2.D;
 
-                var plane3a = (decimal)plane3.a;
-                var plane3b = (decimal)plane3.b;
-                var plane3c = (decimal)plane3.c;
-                var plane3d = (decimal)plane3.d;
+                var plane3a = (decimal)plane3.A;
+                var plane3b = (decimal)plane3.B;
+                var plane3c = (decimal)plane3.C;
+                var plane3d = (decimal)plane3.D;
 
 
                 var bc1 = (plane1b * plane3c) - (plane3b * plane1c);
@@ -215,6 +215,141 @@ namespace RealtimeCSG
         }
         #endregion
 
+        #region Utilities
+        public float Distance(Vector3 point)
+        {
+            float distance = A * point.x + B * point.y + C * point.z - D;
+            return distance;
+        }
 
+        public void Normalize()
+        {
+            var magnitude = 1.0f / Mathf.Sqrt(A * A + B * B + C * C);
+            A *= magnitude;
+            B *= magnitude;
+            C *= magnitude;
+            D *= magnitude;
+        }
+
+        public void Transform(Matrix4x4 transformation)
+        {
+            var ittrans = transformation.inverse.transpose;
+            var vector = ittrans * new Vector4(A, B, C, -D);
+            A = vector.x;
+            B = vector.y;
+            C = vector.z;
+            D = -vector.w;
+        }
+
+        public CSGPlane Negated() 
+        {
+            return new CSGPlane(-A, -B, -C, -D); 
+        }
+
+        public CSGPlane Translated(Vector3 translation)
+        {
+            return new CSGPlane(A, B, C,
+                                // translated offset = Normal.Dotproduct(translation)
+                                // normal = A,B,C
+                                D + (A * translation.x) +
+                                    (B * translation.y) +
+                                    (C * translation.z));
+        }
+
+        /// <summary>Project a point on this plane</summary>
+        /// <param name="point">A point</param>
+        /// <returns>The projected point</returns>
+        public Vector3 Project(Vector3 point)
+        {
+            float px = point.x;
+            float py = point.y;
+            float pz = point.z;
+
+            float nx = Normal.x;
+            float ny = Normal.y;
+            float nz = Normal.z;
+
+            float ax = (px - (nx * D)) * nx;
+            float ay = (py - (ny * D)) * ny;
+            float az = (pz - (nz * D)) * nz;
+            float dot = ax + ay + az;
+
+            float rx = px - (dot * nx);
+            float ry = py - (dot * ny);
+            float rz = pz - (dot * nz);
+
+            return new Vector3(rx, ry, rz);
+        }
+
+        public override int GetHashCode()
+        {
+            return A.GetHashCode() ^
+                    B.GetHashCode() ^
+                    C.GetHashCode() ^
+                    D.GetHashCode();
+        }
+
+        public bool Equals(CSGPlane other)
+        {
+            if (System.Object.ReferenceEquals(this, other))
+                return true;
+            if (System.Object.ReferenceEquals(other, null))
+                return false;
+            return Mathf.Abs(this.Distance(other.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(other.Distance(this.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(A - other.A) <= MathConstants.NormalEpsilon &&
+                    Mathf.Abs(B - other.B) <= MathConstants.NormalEpsilon &&
+                    Mathf.Abs(C - other.C) <= MathConstants.NormalEpsilon;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (System.Object.ReferenceEquals(this, obj))
+                return true;
+            if (!(obj is CSGPlane))
+                return false;
+            CSGPlane other = (CSGPlane)obj;
+            if (System.Object.ReferenceEquals(other, null))
+                return false;
+            return Mathf.Abs(this.Distance(other.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(other.Distance(this.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(A - other.A) <= MathConstants.NormalEpsilon &&
+                    Mathf.Abs(B - other.B) <= MathConstants.NormalEpsilon &&
+                    Mathf.Abs(C - other.C) <= MathConstants.NormalEpsilon;
+        }
+
+        public static bool operator ==(CSGPlane left, CSGPlane right)
+        {
+            if (System.Object.ReferenceEquals(left, right))
+                return true;
+            if (System.Object.ReferenceEquals(left, null) ||
+                System.Object.ReferenceEquals(right, null))
+                return false;
+            return Mathf.Abs(left.Distance(right.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(right.Distance(left.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(left.A - right.A) <= MathConstants.NormalEpsilon &&
+                    Mathf.Abs(left.B - right.B) <= MathConstants.NormalEpsilon &&
+                    Mathf.Abs(left.C - right.C) <= MathConstants.NormalEpsilon;
+        }
+
+        public static bool operator !=(CSGPlane left, CSGPlane right)
+        {
+            if (System.Object.ReferenceEquals(left, right))
+                return false;
+            if (System.Object.ReferenceEquals(left, null) ||
+                System.Object.ReferenceEquals(right, null))
+                return true;
+            return Mathf.Abs(left.Distance(right.PointOnPlane)) > MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(right.Distance(left.PointOnPlane)) > MathConstants.DistanceEpsilon &&
+                    Mathf.Abs(left.A - right.A) > MathConstants.NormalEpsilon ||
+                    Mathf.Abs(left.B - right.B) > MathConstants.NormalEpsilon ||
+                    Mathf.Abs(left.C - right.C) > MathConstants.NormalEpsilon;
+        }
+        #endregion
+
+        public override string ToString() 
+        { 
+            return string.Format(CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", A, B, C, D); 
+        }
     }
 }

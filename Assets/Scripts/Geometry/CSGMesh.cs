@@ -36,7 +36,7 @@ namespace RealtimeCSG
     }
 
     [Serializable]
-    class CSGMesh
+    public sealed class CSGMesh
     {
         public Vector3[] Vertices;
         public HalfEdge[] Edges;
