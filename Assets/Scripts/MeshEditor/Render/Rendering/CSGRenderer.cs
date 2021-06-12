@@ -263,7 +263,7 @@ namespace CSG
 
         public static GeometryWireFrame GetBrushOutLine(int BrushNodeID)
         {
-            if (BrushNodeID == CSGNode.InvalidNodeID)
+            if (BrushNodeID == CSGNode.NodeID)
             {
                 return null;
             }

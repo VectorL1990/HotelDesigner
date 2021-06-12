@@ -427,7 +427,7 @@ namespace RealtimeCSG
                 {
                     if (!ignoreBrushes[i])
                         continue;
-                    if (ignoreBrushes[i].brushNodeID == CSGNode.InvalidNodeID)
+                    if (ignoreBrushes[i].brushNodeID == CSGNode.NodeID)
                         continue;
                     ignoreNodeIDsList.Add(ignoreBrushes[i].brushNodeID);
                 }
@@ -538,7 +538,7 @@ namespace RealtimeCSG
                 {
                     if (!ignoreBrushes[i])
                         continue;
-                    if (ignoreBrushes[i].brushNodeID == CSGNode.InvalidNodeID)
+                    if (ignoreBrushes[i].brushNodeID == CSGNode.NodeID)
                         continue;
                     ignoreNodeIDsList.Add(ignoreBrushes[i].brushNodeID);
                 }
@@ -643,7 +643,7 @@ namespace RealtimeCSG
                                              out LegacyBrushIntersection intersection,
                                              bool ignoreInvisiblePolygons)
         {
-            if (brushNodeID == CSGNode.InvalidNodeID)
+            if (brushNodeID == CSGNode.NodeID)
             {
                 intersection = null;
                 return false;
@@ -685,7 +685,7 @@ namespace RealtimeCSG
                                                     Matrix4x4 modelLocalToWorldMatrix,
                                                     out LegacySurfaceIntersection intersection)
         {
-            if (brushNodeID == CSGNode.InvalidNodeID)
+            if (brushNodeID == CSGNode.NodeID)
             {
                 intersection = null;
                 return false;
@@ -853,8 +853,8 @@ namespace RealtimeCSG
         private static Int32 CreateBrushMesh(Int32 userID, BrushMesh brushMesh)
         {
             if (brushMesh == null) throw new ArgumentNullException("brushMesh");
-            if (brushMesh.vertices == null || brushMesh.halfEdges == null || brushMesh.polygons == null) return CSGNode.InvalidNodeID;
-            if (brushMesh.vertices.Length < 5 || brushMesh.halfEdges.Length < 16 || brushMesh.polygons.Length < 5) return CSGNode.InvalidNodeID;
+            if (brushMesh.vertices == null || brushMesh.halfEdges == null || brushMesh.polygons == null) return CSGNode.NodeID;
+            if (brushMesh.vertices.Length < 5 || brushMesh.halfEdges.Length < 16 || brushMesh.polygons.Length < 5) return CSGNode.NodeID;
 
             GCHandle verticesHandle = GCHandle.Alloc(brushMesh.vertices, GCHandleType.Pinned);
             GCHandle halfEdgesHandle = GCHandle.Alloc(brushMesh.halfEdges, GCHandleType.Pinned);

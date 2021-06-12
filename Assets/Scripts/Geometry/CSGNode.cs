@@ -36,7 +36,7 @@ namespace RealtimeCSG
         [SerializeField] public PrefabInstantiateBehaviour PrefabBehaviour = PrefabInstantiateBehaviour.Reference;
         [SerializeField] public PrefabSourceAlignment PrefabSourceAlignment = PrefabSourceAlignment.AlignedTop;
         [SerializeField] public PrefabDestinationAlignment PrefabDestinationAlignment = PrefabDestinationAlignment.AlignToSurface;
-        public const Int32 InvalidNodeID = 0;
+        public Int32 NodeID = 0;
 #endif
     }
 }
