@@ -74,7 +74,7 @@ namespace RealtimeCSG
                 for (var s = 0; s < surfaceIndices.Count; s++)
                 {
                     var surfaceIndex = surfaceIndices[s];
-                    if (Mathf.Abs(Vector3.Dot(brushLocalNormal, shape.Surfaces[surfaceIndex].Plane.normal)) > MathConstants.AngleEpsilon)
+                    if (Mathf.Abs(Vector3.Dot(brushLocalNormal, shape.Surfaces[surfaceIndex].Plane.Normal)) > CommonVariables.AngleEpsilon)
                     {
                         var texGenIndex = shape.Surfaces[surfaceIndex].TexGenIndex;
 
@@ -87,6 +87,22 @@ namespace RealtimeCSG
                 }
             }
             return modified;
+        }
+
+        public static Matrix4x4 GetModelToTextureSpaceMatrix(TexGen texGen, TexGenFlag texGenFlag, CSGSurface surface, Matrix4x4 localFromModel)
+        {
+
+        }
+
+        public static bool ConvertModelToTextureCoord(ref TexGen texGen, TexGenFlag texGenFlag, ref CSGSurface surface, Matrix4x4 localFromModel,
+                                                      Vector3 localPoint, out Vector2 textureSpacePoint)
+        {
+
+        }
+
+        public static bool RotateTextureCoorAroundWorldPoint(CSGBrush brush, int surfaceIndex, Vector3 worldCenter, float angle)
+        {
+
         }
     }
 }
