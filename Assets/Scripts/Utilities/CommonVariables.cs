@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace RealtimeCSG
 {
-    public static class MathConstants
+    public static class CommonVariables
     {
+        public const Int32 InvalidNodeID = 0;
         public const float SnapDistanceSqr = 0.0001f;
         public const float AngleEpsilon = 0.05f;
         public const float DistanceEpsilon = 0.00015f;

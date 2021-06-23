@@ -295,11 +295,11 @@ namespace RealtimeCSG
                 return true;
             if (System.Object.ReferenceEquals(other, null))
                 return false;
-            return Mathf.Abs(this.Distance(other.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(other.Distance(this.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(A - other.A) <= MathConstants.NormalEpsilon &&
-                    Mathf.Abs(B - other.B) <= MathConstants.NormalEpsilon &&
-                    Mathf.Abs(C - other.C) <= MathConstants.NormalEpsilon;
+            return Mathf.Abs(this.Distance(other.PointOnPlane)) <= CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(other.Distance(this.PointOnPlane)) <= CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(A - other.A) <= CommonVariables.NormalEpsilon &&
+                    Mathf.Abs(B - other.B) <= CommonVariables.NormalEpsilon &&
+                    Mathf.Abs(C - other.C) <= CommonVariables.NormalEpsilon;
         }
 
         public override bool Equals(object obj)
@@ -311,11 +311,11 @@ namespace RealtimeCSG
             CSGPlane other = (CSGPlane)obj;
             if (System.Object.ReferenceEquals(other, null))
                 return false;
-            return Mathf.Abs(this.Distance(other.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(other.Distance(this.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(A - other.A) <= MathConstants.NormalEpsilon &&
-                    Mathf.Abs(B - other.B) <= MathConstants.NormalEpsilon &&
-                    Mathf.Abs(C - other.C) <= MathConstants.NormalEpsilon;
+            return Mathf.Abs(this.Distance(other.PointOnPlane)) <= CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(other.Distance(this.PointOnPlane)) <= CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(A - other.A) <= CommonVariables.NormalEpsilon &&
+                    Mathf.Abs(B - other.B) <= CommonVariables.NormalEpsilon &&
+                    Mathf.Abs(C - other.C) <= CommonVariables.NormalEpsilon;
         }
 
         public static bool operator ==(CSGPlane left, CSGPlane right)
@@ -325,11 +325,11 @@ namespace RealtimeCSG
             if (System.Object.ReferenceEquals(left, null) ||
                 System.Object.ReferenceEquals(right, null))
                 return false;
-            return Mathf.Abs(left.Distance(right.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(right.Distance(left.PointOnPlane)) <= MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(left.A - right.A) <= MathConstants.NormalEpsilon &&
-                    Mathf.Abs(left.B - right.B) <= MathConstants.NormalEpsilon &&
-                    Mathf.Abs(left.C - right.C) <= MathConstants.NormalEpsilon;
+            return Mathf.Abs(left.Distance(right.PointOnPlane)) <= CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(right.Distance(left.PointOnPlane)) <= CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(left.A - right.A) <= CommonVariables.NormalEpsilon &&
+                    Mathf.Abs(left.B - right.B) <= CommonVariables.NormalEpsilon &&
+                    Mathf.Abs(left.C - right.C) <= CommonVariables.NormalEpsilon;
         }
 
         public static bool operator !=(CSGPlane left, CSGPlane right)
@@ -339,11 +339,11 @@ namespace RealtimeCSG
             if (System.Object.ReferenceEquals(left, null) ||
                 System.Object.ReferenceEquals(right, null))
                 return true;
-            return Mathf.Abs(left.Distance(right.PointOnPlane)) > MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(right.Distance(left.PointOnPlane)) > MathConstants.DistanceEpsilon &&
-                    Mathf.Abs(left.A - right.A) > MathConstants.NormalEpsilon ||
-                    Mathf.Abs(left.B - right.B) > MathConstants.NormalEpsilon ||
-                    Mathf.Abs(left.C - right.C) > MathConstants.NormalEpsilon;
+            return Mathf.Abs(left.Distance(right.PointOnPlane)) > CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(right.Distance(left.PointOnPlane)) > CommonVariables.DistanceEpsilon &&
+                    Mathf.Abs(left.A - right.A) > CommonVariables.NormalEpsilon ||
+                    Mathf.Abs(left.B - right.B) > CommonVariables.NormalEpsilon ||
+                    Mathf.Abs(left.C - right.C) > CommonVariables.NormalEpsilon;
         }
         #endregion
 
