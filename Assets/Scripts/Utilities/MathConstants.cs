@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace RealtimeCSG
@@ -50,5 +51,15 @@ namespace RealtimeCSG
         public static readonly Quaternion YQuaternion = Quaternion.AngleAxis(90, Vector3.left);
         public static readonly Quaternion ZQuaternion = Quaternion.AngleAxis(90, Vector3.forward);
         public static readonly Quaternion XQuaternion = Quaternion.AngleAxis(90, Vector3.up);
+    }
+
+    [Serializable]
+    public enum CSGOperationType : byte
+    {
+        Additive = 0,
+
+        Subtractive = 1,
+
+        Intersection = 2
     }
 }

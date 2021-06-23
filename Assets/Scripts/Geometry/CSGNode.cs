@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace CSG
+namespace RealtimeCSG
 {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [Serializable]
     public enum PrefabSourceAlignment : byte
     {
@@ -28,15 +28,15 @@ namespace CSG
         Reference,
         Copy
     }
-    #endif
+#endif
 
     public abstract class CSGNode : MonoBehaviour
     {
-        #if UNITY_EDITOR
-        [SerializedField] public PrefabInstantiateBehaviour PrefabBehaviour = PrefabInstantiateBehaviour.Reference;
-        [SerializedField] public PrefabSourceAlignment PrefabSourceAlignment = PrefabSourceAlignment.AlignedTop;
-        [SerializedField] public PrefabDestinationAlignment PrefabDestinationAlignment = PrefabDestinationAlignment.AlignToSurface;
+#if UNITY_EDITOR
+        [SerializeField] public PrefabInstantiateBehaviour PrefabBehaviour = PrefabInstantiateBehaviour.Reference;
+        [SerializeField] public PrefabSourceAlignment PrefabSourceAlignment = PrefabSourceAlignment.AlignedTop;
+        [SerializeField] public PrefabDestinationAlignment PrefabDestinationAlignment = PrefabDestinationAlignment.AlignToSurface;
         public const Int32 InvalidNodeID = 0;
-        #endif
+#endif
     }
 }
